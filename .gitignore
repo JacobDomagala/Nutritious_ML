@@ -40,3 +40,4 @@ test-results.xml
 uitests/out/**
 !build/
 downloads
+.vscode
