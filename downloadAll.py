@@ -29,6 +29,7 @@ for i in foodList:
             imResize = im.resize(targetDimension, Image.ANTIALIAS)
             imResize.save(f + e, 'JPEG', quality=90)
         except:
+            im.close()
             os.remove(filePath)
         
         
