@@ -1,7 +1,11 @@
 import subprocess
 import os
 from PIL import Image
+from google_drive_downloader import GoogleDriveDownloader as gdd
 
+# gdd.download_file_from_google_drive(file_id='1iytA1n2z4go3uVCwE__vIKouTKyIDjEq',
+#                                     dest_path='./data/mnist.zip',
+#                                     unzip=True)
 f = open('foodlist.txt', 'r')
 foodList = f.readlines()
 f.close()
@@ -9,7 +13,7 @@ f.close()
 numClass = len(foodList)
 path = os.path.dirname(os.path.realpath(__file__)) + "\\downloads"
 
-limit = 10
+limit = 100
 targetDimension = (64, 64)
 
 for i in foodList:
@@ -19,7 +23,12 @@ for i in foodList:
     dirs = os.listdir(subPath)
     for file in dirs:
         filePath = subPath + "\\{}".format(file)
-        im = Image.open(filePath)
-        f, e = os.path.splitext(filePath)
-        imResize = im.resize(targetDimension, Image.ANTIALIAS)
-        imResize.save(f + e, 'JPEG', quality=90)
+        try:
+            im = Image.open(filePath)
+            f, e = os.path.splitext(filePath)
+            imResize = im.resize(targetDimension, Image.ANTIALIAS)
+            imResize.save(f + e, 'JPEG', quality=90)
+        except:
+            os.remove(filePath)
+        
+        
