@@ -11,18 +11,18 @@ foodList = f.readlines()
 f.close()
 
 numClass = len(foodList)
-path = os.path.dirname(os.path.realpath(__file__)) + "\\downloads"
+path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "downloads")
+pathToChromeDriver = os.path.join(os.path.dirname(os.path.realpath(__file__)), "chromedriver_win32", "chromedriver.exe")
+limit = 500
+targetDimension = (128, 128)
 
-limit = 100
-targetDimension = (64, 64)
-
-for i in foodList:
-    i = i[:-1]
-    subprocess.call("googleimagesdownload --keywords \"{}\" --limit {}".format(i, limit), shell=True)  
-    subPath = path + "\\{}".format(i)
+for i in foodList[2:]:
+    i = i[:-1] # remove '\n' character
+    subprocess.call("googleimagesdownload --keywords \"{}\" --limit {} --chromedriver {}".format(i, limit, pathToChromeDriver), shell=True)  
+    subPath = os.path.join(path, i)
     dirs = os.listdir(subPath)
     for file in dirs:
-        filePath = subPath + "\\{}".format(file)
+        filePath = os.path.join(subPath, file)
         try:
             im = Image.open(filePath)
             f, e = os.path.splitext(filePath)
@@ -31,5 +31,4 @@ for i in foodList:
         except:
             im.close()
             os.remove(filePath)
-        
         
